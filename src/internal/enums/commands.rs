@@ -30,5 +30,8 @@ pub enum Commands{
     Log,
     Checkout{
         commit_hash:String
+    },
+    Branch{
+        branch_name: String
     }
 }

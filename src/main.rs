@@ -71,6 +71,13 @@ fn main()->Result<()>{
                 Err(e)=>writeln!(stderr,"{}",e.to_string())?    
             }
             Ok(())
+        },
+        Commands::Branch { branch_name }=>{
+            match internal::branch(branch_name.to_string()){
+                Ok(_)=>{},
+                Err(e)=>writeln!(stderr,"{}",e.to_string())?    
+            }
+            Ok(())
         }
     }
 }

@@ -6,7 +6,9 @@ pub mod ls_tree;
 pub mod commit_tree;
 pub mod log;
 pub mod checkout;
+pub mod branch;
 
+pub use branch::*;
 pub use checkout::*;
 pub use log::*;
 pub use commit_tree::*;

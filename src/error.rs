@@ -60,8 +60,11 @@ pub enum RGitError{
     #[error("error: options '-t' and '-p' cannot be used togetherH")]
     CantPrettyPrintAndType,
     
-    #[error("io error: {0}")]
-    Io(#[from] io::Error),
+    #[error("error: a branch named {branch_name} already exists")]
+    BranchAlreadyExists{
+        branch_name:String
+    },
 
-    
+    #[error("io error: {0}")]
+    Io(#[from] io::Error),    
 }
