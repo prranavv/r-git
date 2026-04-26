@@ -7,7 +7,7 @@ pub fn checkout_branch(branch_name:&String)->Result<()>{
         .map_err(|e|RGitError::FileWriteError { path: format!(".rgit/HEAD"), source: Box::new(e) })?;
 
 
-    let head_commit = get_parent_hash().unwrap();
+    let head_commit = get_parent_hash().unwrap().trim().to_string();
     checkout_commit_hash(&head_commit)?;
     Ok(())
 }

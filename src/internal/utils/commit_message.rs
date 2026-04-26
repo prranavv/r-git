@@ -8,7 +8,7 @@ pub fn commit_message(tree_hash:&String,message:&String)->String{
     content.push_str(&format!("tree {}\n",tree_hash));
 
     let parent_hash =match get_parent_hash(){
-        Some(p)=>p,
+        Some(p)=>p.trim().to_string(),
         None=>" ".to_string()
     };
 
