@@ -15,7 +15,9 @@ pub mod build_from_tree_hash;
 pub mod remove_cur_dir;
 pub mod create_new_branch;
 pub mod checkout_branch;
+pub mod init_repo;
 
+pub use init_repo::*;
 pub use checkout_branch::*;
 pub use create_new_branch::*;
 pub use remove_cur_dir::*;
