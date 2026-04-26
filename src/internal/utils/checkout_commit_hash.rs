@@ -1,15 +1,12 @@
 use crate::error::RGitError;
 use crate::internal::utils::{build_from_tree_hash, read_object, remove_cur_dir,build_tree};
 use crate::Result;
-use std::fs;
 
 pub fn checkout_commit_hash(commit_hash:&String)->Result<()>{
     let (obj_type,content) = read_object(&commit_hash)?;
     if obj_type!="commit".to_string(){
         return Err(RGitError::NotCommitHash)
     }
-    fs::write(format!(".rgit/HEAD"), format!("{}",commit_hash))
-        .map_err(|e|RGitError::FileWriteError { path: format!(".rgit/HEAD"), source: Box::new(e) })?;
     let lines = content.lines();
     for line in lines{
         let line = line.trim();
