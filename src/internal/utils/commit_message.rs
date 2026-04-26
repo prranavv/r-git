@@ -17,9 +17,8 @@ pub fn commit_message(tree_hash:&String,message:&String)->String{
     let time = Utc::now();
     let timestamp = time.timestamp();
     let timezone = "+530";
-
-    content.push_str(&format!("author Pranav pranvvkumar03@gmail.com {} {}\n",timestamp,timezone));
-    content.push_str(&format!("commiter Pranav pranvvkumar03@gmail.com {} {}\n",timestamp,timezone));
+    content.push_str(&format!("author Pranav <pranavvkumar03@gmail.com> {} {}\n",timestamp,timezone));
+    content.push_str(&format!("commiter Pranav <pranavvkumar03@gmail.com> {} {}\n",timestamp,timezone));
     
     content.push_str("\n");
 

@@ -1,3 +1,5 @@
+use chrono::DateTime;
+
 use crate::{Result,internal::utils::{get_parent_hash, read_object}};
 
 pub fn parse_commit_history()->Result<String>{
@@ -39,9 +41,14 @@ pub fn parse_commit_history()->Result<String>{
                 let author = iter.next().unwrap();
                 let author_name = iter.next().unwrap();
                 let author_email = iter.next().unwrap();
+                
+                let timestamp: i64 = iter.next().unwrap().parse().unwrap();
+                let time = DateTime::from_timestamp_secs(timestamp).unwrap();
+                let date = format!("Date: {}\n\n",time.format("%a %b %d %H:%M:%S %Y %z"));
+                let author_string = format!("{}: {} {}\n",author,author_name,author_email);
 
-                let author_string = format!("{} {} {}\n\n",author,author_name,author_email);
                 result.push_str(&author_string);
+                result.push_str(&date);
             }else if line.starts_with("commiter"){
                 continue
             }else {
