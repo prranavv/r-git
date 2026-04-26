@@ -1,5 +1,7 @@
 use crate::{Result, internal::utils::{checkout_branch, checkout_commit_hash}};
 use std::fs;
+use std::io;
+use std::io::Write;
 
 pub fn checkout(commit_hash:&String)->Result<()>{
     let files = fs::read_dir("./.rgit/refs/heads")?;
@@ -11,5 +13,7 @@ pub fn checkout(commit_hash:&String)->Result<()>{
         }
     }
     checkout_commit_hash(commit_hash)?;
+    let mut stdout = io::stdout();
+    writeln!(stdout,"You are in 'detached HEAD' state.")?;
     Ok(())
 }
