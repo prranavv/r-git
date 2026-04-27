@@ -16,7 +16,9 @@ pub mod remove_cur_dir;
 pub mod create_new_branch;
 pub mod checkout_branch;
 pub mod init_repo;
+pub mod update_index_contents;
 
+pub use update_index_contents::*;
 pub use init_repo::*;
 pub use checkout_branch::*;
 pub use create_new_branch::*;

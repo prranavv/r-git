@@ -33,5 +33,8 @@ pub enum Commands{
     },
     Branch{
         branch_name: String
+    },
+    Add{
+        file_name: String
     }
 }

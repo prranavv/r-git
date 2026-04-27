@@ -78,6 +78,13 @@ fn main()->Result<()>{
                 Err(e)=>writeln!(stderr,"{}",e.to_string())?    
             }
             Ok(())
+        },
+        Commands::Add { file_name }=>{
+            match internal::add(file_name){
+                Ok(_)=>{},
+                Err(e)=>writeln!(stderr,"{}",e.to_string())?  
+            }
+            Ok(())
         }
     }
 }
