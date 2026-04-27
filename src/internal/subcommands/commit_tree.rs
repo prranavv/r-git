@@ -16,10 +16,10 @@ pub fn commit_tree(tree_hash:&String,message:&String)->Result<()>{
     store.extend_from_slice(header.as_bytes());
     store.extend_from_slice(bytes);
 
-    let (dirname,filename,result) = hash_content(&store)?;
-    zlib_encoder(store, dirname, filename)?;
+    let (dirname,filename,_result) = hash_content(&store)?;
+    zlib_encoder(store, &dirname, &filename)?;
 
-    let hex_string = hex::encode(result);
+    let hex_string = format!("{}{}",dirname,filename);
     let mut stdout = io::stdout();
     writeln!(stdout,"{}",hex_string.trim())?;
 

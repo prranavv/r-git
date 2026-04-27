@@ -32,7 +32,7 @@ pub fn build_tree(path:&str)->Result<Array<u8, UInt<UInt<UInt<UInt<UInt<UTerm, B
             store.extend_from_slice(header.as_bytes());
             store.extend_from_slice(blob_contents);
             let (dirname,filename,result) = hash_content(&store)?;
-            zlib_encoder(store.to_vec(), dirname, filename)?;
+            zlib_encoder(store.to_vec(), &dirname, &filename)?;
             let file_entry = Entry::new(Mode::File, file_name, result);
             entries.push(file_entry);
         }else{
@@ -47,6 +47,6 @@ pub fn build_tree(path:&str)->Result<Array<u8, UInt<UInt<UInt<UInt<UInt<UTerm, B
     store.extend_from_slice(header.as_bytes());
     store.extend_from_slice(&entries_bytes);
     let (dirname,filename,result) = hash_content(&store)?;
-    zlib_encoder(store, dirname, filename)?;
+    zlib_encoder(store, &dirname, &filename)?;
     Ok(result)
 }

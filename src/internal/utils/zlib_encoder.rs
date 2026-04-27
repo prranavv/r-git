@@ -5,7 +5,7 @@ use flate2::write::ZlibEncoder;
 use crate::Result;
 use crate::RGitError;
 
-pub fn zlib_encoder(content:Vec<u8>,dirname:String,filename:String)->Result<()>{
+pub fn zlib_encoder(content:Vec<u8>,dirname:&String,filename:&String)->Result<()>{
     let mut encoder = ZlibEncoder::new(Vec::new(), Compression::default());
     encoder.write_all(&content)
         .map_err(|e|RGitError::FileWriteError { 

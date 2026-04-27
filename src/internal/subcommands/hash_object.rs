@@ -20,13 +20,13 @@ pub fn hash_object(name:&String,write:&bool,stdin:&bool)->Result<()>{
     store.extend_from_slice(header.as_bytes());
     store.extend_from_slice(blob_contents);
 
-    let (dirname,filename,result) = hash_content(&store)?;
-    let hex_string =hex::encode(&result);
+    let (dirname,filename,_result) = hash_content(&store)?;
+    let hex_string =format!("{}{}",dirname,filename);
     let mut stdout = io::stdout();
     writeln!(stdout,"{}",hex_string.trim())?;
 
     if *write{
-        zlib_encoder(store.to_vec(), dirname, filename)?   
+        zlib_encoder(store.to_vec(), &dirname, &filename)?   
     };
     Ok(())
 }
