@@ -1,7 +1,5 @@
 use crate::internal::{entry::Entry};
 
-
-
 fn build_entry(file_entry:&Entry)->Vec<u8>{
     let mut entry:Vec<u8> = Vec::new();
     let mode = file_entry.mode as u32;

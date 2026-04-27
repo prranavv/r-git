@@ -1,5 +1,4 @@
 use std::fs;
-
 use crate::{Result, error::RGitError, internal::utils::create_new_branch};
 
 pub fn branch(branch_name:String)->Result<()>{

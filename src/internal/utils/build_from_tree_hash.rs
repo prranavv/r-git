@@ -1,7 +1,5 @@
 use std::fs;
-
 use crate::internal::utils::read_object;
-
 
 pub fn build_from_tree_hash(tree_hash:String,path:String){
     let (_obj_type,content) = read_object(&tree_hash).unwrap();
@@ -15,7 +13,6 @@ pub fn build_from_tree_hash(tree_hash:String,path:String){
             let _file_type = iter.next().unwrap();
             let tree_hash = iter.next().unwrap().to_string();
             let dir_name = iter.next().unwrap();
-            // println!("{}",format!("{}{}/",path,dir_name));
             build_from_tree_hash(tree_hash,format!("{}{}/",path,dir_name));
         }else if line.starts_with("100644"){
             let parts: Vec<&str>=line.split(' ').collect();
@@ -32,6 +29,5 @@ pub fn build_from_tree_hash(tree_hash:String,path:String){
         }else{  
             continue;
         }
-
     }
 }

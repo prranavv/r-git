@@ -1,4 +1,8 @@
 use clap::{Parser};
+use crate::error::RGitError;
+use std::io;
+use std::io::Write;
+
 pub mod cli;
 pub mod internal;
 pub mod error;
@@ -6,9 +10,6 @@ pub mod error;
 pub use cli::Cli;
 pub use internal::Commands;
 
-use crate::error::RGitError;
-use std::io;
-use std::io::Write;
 type Result<T> = std::result::Result<T, RGitError>;
 
 fn main()->Result<()>{

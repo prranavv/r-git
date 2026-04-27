@@ -1,6 +1,5 @@
 
 use clap::{Parser};
-
 use crate::internal::enums::Commands;
 
 #[derive(Parser)]

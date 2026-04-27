@@ -1,7 +1,5 @@
 use chrono::Utc;
-
 use crate::{internal::utils::get_parent_hash};
-
 
 pub fn commit_message(tree_hash:&String,message:&String)->String{
     let mut content = String::new();

@@ -5,7 +5,6 @@ use crate::{Result, internal::utils::{commit_message, hash_content, zlib_encoder
 use std::io;
 use std::io::Write;
 
-
 pub fn commit_tree(tree_hash:&String,message:&String)->Result<()>{
     let commit_content = commit_message(tree_hash, message);
 

@@ -1,5 +1,4 @@
 use std::fmt::Display;
-
 use crate::internal::Mode;
 
 #[derive(Debug)]

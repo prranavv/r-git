@@ -1,5 +1,4 @@
-use std::{fs};
-
+use std::fs;
 use crate::internal::utils::get_head_branch;
 
 pub fn get_parent_hash()->Option<String>{

@@ -3,7 +3,6 @@ use crate::Result;
 use std::io;
 use std::io::Write;
 
-
 pub fn cat_file(name:&String,type_of:bool,pretty_print:bool)->Result<()>{
     if type_of&& pretty_print{
         return Err(crate::error::RGitError::CantPrettyPrintAndType)

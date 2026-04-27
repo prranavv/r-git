@@ -1,7 +1,6 @@
 use std::{fs};
 use crate::internal::utils::read_object;
 
-
 pub fn remove_cur_dir(tree_hash:&String,path:&String){
     let (_obj_type,content) = read_object(&tree_hash).unwrap();
     let lines = content.lines();
