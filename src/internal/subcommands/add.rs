@@ -1,7 +1,11 @@
-use crate::{RGitError, Result, internal::utils::{hash_content, update_index_contents}};
+use crate::{RGitError, Result, internal::utils::{add_all_to_index, hash_content, update_index_contents}};
 use std::fs;
 
 pub fn add(file_path: &String)->Result<()>{
+    if file_path=="."{
+        add_all_to_index(file_path)?;
+        return Ok(())
+    }    
     let contents=fs::read_to_string(&file_path)
                             .map_err(|e|RGitError::FileReadError { path: file_path.to_string(), source: Box::new(e) })?;                
 
