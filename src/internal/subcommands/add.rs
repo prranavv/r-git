@@ -5,6 +5,10 @@ pub fn add(file_path: &String)->Result<()>{
     if file_path=="."{
         add_all_to_index(file_path)?;
         return Ok(())
+    }
+    let mut file_path = file_path.as_str();
+    if file_path.starts_with("./"){
+        file_path = &file_path[2..];
     }    
     let contents=fs::read_to_string(&file_path)
                             .map_err(|e|RGitError::FileReadError { path: file_path.to_string(), source: Box::new(e) })?;                
