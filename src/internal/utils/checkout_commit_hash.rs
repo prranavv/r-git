@@ -18,7 +18,7 @@ pub fn checkout_commit_hash(commit_hash:&String)->Result<()>{
             let cur_tree_hash = build_tree("./")?;
             let hex_string = hex::encode(cur_tree_hash);
             remove_cur_dir(&hex_string,&format!("./"))?;
-            build_from_tree_hash(tree_hash,format!("./"));
+            build_from_tree_hash(tree_hash,format!("./"))?;
         }
     }
     Ok(())
