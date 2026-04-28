@@ -28,6 +28,19 @@ impl From<String> for IndexEntry{
     }
 }
 
+impl From<&str> for IndexEntry{
+    fn from(value: &str) -> Self {
+        let parts:Vec<&str> = value.split(" ").collect();
+        let mut iter = parts.iter();
+        let mode = iter.next().unwrap();
+        let file_path = iter.next().unwrap();
+        let hash = iter.next().unwrap();
+        let mode = Mode::from(*mode);
+
+        Self { mode, file_path: file_path.to_string(), hash: hash.to_string() }
+    }
+}
+
 impl From<IndexEntry> for String{
     fn from(value: IndexEntry) -> Self {
         format!("{} {} {}",value.mode,value.file_path,value.hash)
