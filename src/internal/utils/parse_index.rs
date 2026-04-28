@@ -1,9 +1,12 @@
+use crate::error::RGitError;
 use crate::internal::index_entry::IndexEntry;
-use std::fs;
 use crate::Result;
+use std::fs;
+use std::path::PathBuf;
 
 pub fn parse_index()->Result<Vec<IndexEntry>>{
-    let contents = fs::read_to_string(".rgit/index").unwrap();
+    let contents = fs::read_to_string(".rgit/index")
+                        .map_err(|e|RGitError::FileReadError { path: PathBuf::from(".rgit/index"), source: Box::new(e) })?;
     let lines = contents.lines();
     let mut result = Vec::new();
     for line in lines {
