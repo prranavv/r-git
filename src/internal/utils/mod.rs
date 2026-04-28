@@ -18,7 +18,9 @@ pub mod checkout_branch;
 pub mod init_repo;
 pub mod update_index_contents;
 pub mod add_all_to_index;
+pub mod parse_index;
 
+pub use parse_index::*;
 pub use add_all_to_index::*;
 pub use update_index_contents::*;
 pub use init_repo::*;
