@@ -1,4 +1,5 @@
 use std::fs;
+use std::path::PathBuf;
 use crate::Result;
 use crate::error::RGitError;
 use crate::internal::utils::{hash_content, zlib_encoder};
@@ -10,7 +11,7 @@ pub fn hash_object(name:&String,write:&bool,stdin:&bool)->Result<()>{
         name.to_owned()
     }else{
     let contents=fs::read_to_string(&name)
-                            .map_err(|e|RGitError::FileReadError { path: name.to_string(), source: Box::new(e) })?;                
+                            .map_err(|e|RGitError::FileReadError { path: PathBuf::from(name), source: Box::new(e) })?;                
         contents
     };
 

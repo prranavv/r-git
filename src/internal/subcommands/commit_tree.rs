@@ -1,4 +1,5 @@
 use std::fs;
+use std::path::PathBuf;
 use crate::RGitError;
 use crate::internal::utils::get_head_branch;
 use crate::{Result, internal::utils::{commit_message, hash_content, zlib_encoder}};
@@ -24,6 +25,6 @@ pub fn commit_tree(tree_hash:&String,message:&String)->Result<()>{
 
     let head = get_head_branch().unwrap();
     fs::write(format!(".rgit/{}",head), format!("{}\n",hex_string))
-        .map_err(|e|RGitError::FileWriteError { path: format!(".rgit/{}",head), source: Box::new(e) })?;
+        .map_err(|e|RGitError::FileWriteError { path: PathBuf::from(format!(".rgit/{}",head)), source: Box::new(e) })?;
     Ok(())
 }

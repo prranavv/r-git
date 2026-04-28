@@ -1,12 +1,12 @@
 use crate::{RGitError, Result, internal::utils::{hash_content, update_index_contents}};
-use std::fs;
+use std::{fs, path::PathBuf};
 
 pub fn add_all_to_index(file_path:&String)->Result<()>{
 
     for entry in fs::read_dir(&file_path).unwrap(){
         let entry = entry.unwrap();
         let path = entry.path();
-        let file_type = entry.file_type().unwrap();
+        let file_type = entry.file_type().map_err(|e|RGitError::Io(e))?;
         let file_name = entry.file_name().into_string().unwrap();
         if file_name==".rgit".to_string() || file_name ==".git".to_string() || file_name =="target".to_string(){
             continue;
@@ -15,7 +15,7 @@ pub fn add_all_to_index(file_path:&String)->Result<()>{
             add_all_to_index(&path.to_string_lossy().to_string())?;
         }else if file_type.is_file(){
             let contents=fs::read_to_string(&path)
-                        .map_err(|e|RGitError::FileReadError { path: file_path.to_string(), source: Box::new(e) })?;                
+                        .map_err(|e|RGitError::FileReadError { path: file_path.to_path_buf(), source: Box::new(e) })?;                
 
             let blob_contents = contents.as_bytes();
             let header = format!("blob {}\0",blob_contents.len());

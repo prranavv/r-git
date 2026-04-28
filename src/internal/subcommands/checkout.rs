@@ -1,5 +1,5 @@
 use crate::{Result, internal::utils::{checkout_branch, checkout_commit_hash}};
-use std::fs;
+use std::{fs, path::PathBuf};
 use std::io;
 use std::io::Write;
 use crate::RGitError;
@@ -18,6 +18,6 @@ pub fn checkout(commit_hash:&String)->Result<()>{
     writeln!(stdout,"You are in 'detached HEAD' state.")?;
 
     fs::write(format!(".rgit/HEAD"), format!("{}",commit_hash))
-        .map_err(|e|RGitError::FileWriteError { path: format!(".rgit/HEAD"), source: Box::new(e) })?;
+        .map_err(|e|RGitError::FileWriteError { path:PathBuf::from(format!(".rgit/HEAD")), source: Box::new(e) })?;
     Ok(())
 }

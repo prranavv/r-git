@@ -10,8 +10,8 @@ pub fn build_tree(path:&str)->Result<Array<u8, UInt<UInt<UInt<UInt<UInt<UTerm, B
     let mut entries:Vec<Entry> = Vec::new();
 
     for entry in fs::read_dir(path)
-                                            .map_err(|e|RGitError::DirectoryReadError { path: path.to_string(), source: Box::new(e) })?{
-        let entry = entry.map_err(|e|RGitError::DirectoryEntryError { path: path.to_string(), source: Box::new(e) })?;
+                                            .map_err(|e|RGitError::DirectoryReadError { path: path.into(), source: Box::new(e) })?{
+        let entry = entry.map_err(|e|RGitError::DirectoryEntryError { path: path.into(), source: Box::new(e) })?;
         let path = entry.path();
         let file_type = entry.file_type().map_err(|e|RGitError::Io(e))?;
         let file_name = entry.file_name().into_string().unwrap();
@@ -24,7 +24,7 @@ pub fn build_tree(path:&str)->Result<Array<u8, UInt<UInt<UInt<UInt<UInt<UTerm, B
             entries.push(tree_entry);
         }else if file_type.is_file(){
             let contents=fs::read_to_string(&path)
-                                                    .map_err(|e|RGitError::FileReadError { path: format!("{}/{}",path.to_string_lossy(),file_name), source: Box::new(e) })?;
+                                                    .map_err(|e|RGitError::FileReadError { path: format!("{}/{}",path.display(),file_name).into(), source: Box::new(e) })?;
             
             let blob_contents = contents.as_bytes();
             let header = format!("blob {}\0",blob_contents.len());

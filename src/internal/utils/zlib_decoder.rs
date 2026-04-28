@@ -8,7 +8,7 @@ pub fn zlib_decoder(name:&String)->Result<Vec<u8>>{
     let filename = name[2..].to_string();
     let bytes = fs::read(format!(".rgit/objects/{}/{}",dir_name,filename))
                             .map_err(|e|RGitError::FileDoesNotExist{
-                                path:format!(".rgit/objects/{}/{}",dir_name,filename),
+                                path:format!(".rgit/objects/{}/{}",dir_name,filename).into(),
                                 source:Box::new(e)
                             })?;
 
@@ -16,7 +16,7 @@ pub fn zlib_decoder(name:&String)->Result<Vec<u8>>{
     let mut decompressed_string = Vec::new();
     decoder.read_to_end(&mut decompressed_string)
             .map_err(|e|RGitError::FileReadError { 
-                path: format!(".rgit/objects/{}/{}",dir_name,filename),
+                path: format!(".rgit/objects/{}/{}",dir_name,filename).into(),
                 source:Box::new(e)
             })?;
     Ok(decompressed_string)

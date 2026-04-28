@@ -1,46 +1,46 @@
-use std::io;
+use std::{io, path::PathBuf};
 use thiserror::Error;
 
 #[derive(Debug,Error)]
 pub enum RGitError{
     #[error("error: file does not exist: {path} \ncaused by the error: {source}")]
     FileDoesNotExist{
-        path:String,
+        path:PathBuf,
         #[source]
         source: Box<dyn std::error::Error>,
     },
 
     #[error("error: failed to read the file :{path} \ncaused by the error: {source}")]
     FileReadError{
-        path:String,
+        path:PathBuf,
         #[source]
         source: Box<dyn std::error::Error>,
     },
 
     #[error("error: failed to write the file :{path} \ncaused by the error: {source}")]
     FileWriteError{
-        path:String,
+        path:PathBuf,
         #[source]
         source: Box<dyn std::error::Error>,
     },
 
     #[error("error: failed to create directory: {path} \ncaused by the error: {source}")]
     DirectoryCreateError{
-        path:String,
+        path:PathBuf,
         #[source]
         source: Box<dyn std::error::Error>,
     },
 
     #[error("error: failed to read directory: {path} \ncaused by the error: {source}")]
     DirectoryReadError{
-        path:String,
+        path:PathBuf,
         #[source]
         source: Box<dyn std::error::Error>,
     },
 
     #[error("error: failed to read entry within directory: {path} \ncaused by the error: {source}")]
     DirectoryEntryError{
-        path:String,
+        path:PathBuf,
         #[source]
         source: Box<dyn std::error::Error>,
     },
@@ -63,6 +63,11 @@ pub enum RGitError{
     #[error("error: a branch named {branch_name} already exists")]
     BranchAlreadyExists{
         branch_name:String
+    },
+
+    #[error("error: not a valid hash : {hash_name}")]
+    NotValidHash{
+        hash_name: String
     },
 
     #[error("io error: {0}")]
