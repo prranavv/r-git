@@ -8,7 +8,9 @@ pub mod log;
 pub mod checkout;
 pub mod branch;
 pub mod add;
+pub mod commit;
 
+pub use commit::*;
 pub use add::*;
 pub use branch::*;
 pub use checkout::*;

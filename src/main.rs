@@ -15,7 +15,7 @@ type Result<T> = std::result::Result<T, RGitError>;
 fn main()->Result<()>{
     let cli = Cli::parse();
     let mut stderr = io::stderr();
-
+    
     match &cli.command{
         Commands::Init=>{
             match internal::init(){
@@ -82,6 +82,13 @@ fn main()->Result<()>{
         },
         Commands::Add { file_name }=>{
             match internal::add(file_name){
+                Ok(_)=>{},
+                Err(e)=>writeln!(stderr,"{}",e.to_string())?  
+            }
+            Ok(())
+        },
+        Commands::Commit { message }=>{
+            match internal::commit(message){
                 Ok(_)=>{},
                 Err(e)=>writeln!(stderr,"{}",e.to_string())?  
             }

@@ -38,5 +38,9 @@ pub enum Commands{
     },
     Add{
         file_name: PathBuf
+    },
+    Commit{
+        #[arg(short='m')]
+        message:String
     }
 }
