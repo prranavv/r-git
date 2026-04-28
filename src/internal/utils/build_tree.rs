@@ -1,4 +1,6 @@
+use std::ffi::OsString;
 use std::fs;
+use std::os::unix::ffi::OsStrExt;
 use crate::error::RGitError;
 use crate::internal::entry::Entry;
 use crate::internal::utils::{build_entries, hash_content, zlib_encoder};
@@ -14,17 +16,17 @@ pub fn build_tree(path:&str)->Result<Array<u8, UInt<UInt<UInt<UInt<UInt<UTerm, B
         let entry = entry.map_err(|e|RGitError::DirectoryEntryError { path: path.into(), source: Box::new(e) })?;
         let path = entry.path();
         let file_type = entry.file_type().map_err(|e|RGitError::Io(e))?;
-        let file_name = entry.file_name().into_string().unwrap();
-        if file_name==".rgit".to_string() || file_name ==".git".to_string() || file_name =="target".to_string(){
+        let file_name = entry.file_name();
+        if file_name==OsString::from(".rgit") || file_name ==OsString::from(".git") || file_name ==OsString::from("target"){
             continue;
         }
         if file_type.is_dir() && !fs::read_dir(&path).map_err(|e|RGitError::DirectoryReadError { path: path.clone().into(), source: Box::new(e) })?.next().is_none(){
             let tree_hash = build_tree(path.to_str().unwrap())?;
-            let tree_entry = Entry::new(Mode::Directory, file_name, tree_hash);
+            let tree_entry = Entry::new(Mode::Directory, file_name.into(), tree_hash);
             entries.push(tree_entry);
         }else if file_type.is_file(){
             let contents=fs::read_to_string(&path)
-                                                    .map_err(|e|RGitError::FileReadError { path: format!("{}/{}",path.display(),file_name).into(), source: Box::new(e) })?;
+                                                    .map_err(|e|RGitError::FileReadError { path: format!("{}/{}",path.display(),file_name.display()).into(), source: Box::new(e) })?;
             
             let blob_contents = contents.as_bytes();
             let header = format!("blob {}\0",blob_contents.len());
@@ -33,7 +35,8 @@ pub fn build_tree(path:&str)->Result<Array<u8, UInt<UInt<UInt<UInt<UInt<UTerm, B
             store.extend_from_slice(blob_contents);
             let (dirname,filename,result) = hash_content(&store)?;
             zlib_encoder(store.to_vec(), &dirname, &filename)?;
-            let file_entry = Entry::new(Mode::File, file_name, result);
+            let file_entry = Entry::new(Mode::File, file_name.into(), result);
+            
             entries.push(file_entry);
         }else{
             continue;

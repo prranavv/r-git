@@ -1,3 +1,5 @@
+use std::os::unix::ffi::OsStrExt;
+
 use crate::internal::{entry::Entry};
 
 fn build_entry(file_entry:&Entry)->Vec<u8>{
