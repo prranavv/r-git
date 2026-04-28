@@ -87,6 +87,9 @@ pub enum RGitError{
     #[error("error: cannot create a new branch without having atleast 1 commit")]
     CantCreateNewBranch,
 
+    #[error("error: cannot get head branch")]
+    CantGetHeadBranch,
+
     #[error("io error: {0}")]
     Io(#[from] io::Error),    
 }

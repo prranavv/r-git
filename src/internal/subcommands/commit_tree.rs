@@ -23,7 +23,7 @@ pub fn commit_tree(tree_hash:&String,message:&String)->Result<()>{
     let mut stdout = io::stdout();
     writeln!(stdout,"{}",hex_string.trim())?;
 
-    let head = get_head_branch().unwrap();
+    let head = get_head_branch().ok_or(RGitError::CantGetHeadBranch)?;
     fs::write(format!(".rgit/{}",head), format!("{}\n",hex_string))
         .map_err(|e|RGitError::FileWriteError { path: PathBuf::from(format!(".rgit/{}",head)), source: Box::new(e) })?;
     Ok(())
