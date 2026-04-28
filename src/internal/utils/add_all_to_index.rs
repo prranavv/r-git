@@ -1,5 +1,5 @@
 use crate::{RGitError, Result, internal::utils::{hash_content, update_index_contents}};
-use std::{fs, path::PathBuf};
+use std::{ffi::OsString, fs, path::PathBuf};
 
 pub fn add_all_to_index(file_path:&PathBuf)->Result<()>{
     for entry in fs::read_dir(&file_path)
@@ -7,8 +7,8 @@ pub fn add_all_to_index(file_path:&PathBuf)->Result<()>{
         let entry = entry?;
         let path = entry.path();
         let file_type = entry.file_type().map_err(|e|RGitError::Io(e))?;
-        let file_name = entry.file_name().into_string().unwrap();
-        if file_name==".rgit".to_string() || file_name ==".git".to_string() || file_name =="target".to_string(){
+        let file_name = entry.file_name();
+        if file_name==OsString::from(".rgit") || file_name ==OsString::from(".git") || file_name ==OsString::from("target"){
             continue;
         }
         if file_type.is_dir() && !fs::read_dir(&path)?.next().is_none(){

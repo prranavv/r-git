@@ -1,6 +1,7 @@
 use std::ffi::OsString;
 use std::fs;
 use std::os::unix::ffi::OsStrExt;
+use std::path::PathBuf;
 use crate::error::RGitError;
 use crate::internal::entry::Entry;
 use crate::internal::utils::{build_entries, hash_content, zlib_encoder};
@@ -8,7 +9,7 @@ use crate::internal::Mode;
 use sha1::{digest::{array::Array, consts::{B0, B1}, typenum::{UInt, UTerm}}};
 use crate::Result;
 
-pub fn build_tree(path:&str)->Result<Array<u8, UInt<UInt<UInt<UInt<UInt<UTerm, B1>, B0>, B1>, B0>, B0>>>{
+pub fn build_tree(path:&PathBuf)->Result<Array<u8, UInt<UInt<UInt<UInt<UInt<UTerm, B1>, B0>, B1>, B0>, B0>>>{
     let mut entries:Vec<Entry> = Vec::new();
 
     for entry in fs::read_dir(path)
@@ -21,7 +22,7 @@ pub fn build_tree(path:&str)->Result<Array<u8, UInt<UInt<UInt<UInt<UInt<UTerm, B
             continue;
         }
         if file_type.is_dir() && !fs::read_dir(&path).map_err(|e|RGitError::DirectoryReadError { path: path.clone().into(), source: Box::new(e) })?.next().is_none(){
-            let tree_hash = build_tree(path.to_str().unwrap())?;
+            let tree_hash = build_tree(&path)?;
             let tree_entry = Entry::new(Mode::Directory, file_name.into(), tree_hash);
             entries.push(tree_entry);
         }else if file_type.is_file(){
