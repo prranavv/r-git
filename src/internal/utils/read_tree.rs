@@ -11,7 +11,7 @@ pub fn read_tree(name:&String)->Result<String>{
     let obj_type = std::str::from_utf8(obj_type)
                                     .map_err(|e|RGitError::BytesToStringError { source: Box::new(e) })?;
     if obj_type=="tree".to_string(){
-        let content = parse_tree(&decompressed_bytes);
+        let content = parse_tree(&decompressed_bytes)?;
         Ok(content)
     }else{
         Err(RGitError::NotTree)
