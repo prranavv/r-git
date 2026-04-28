@@ -1,3 +1,5 @@
+use std::path::PathBuf;
+
 use clap::{Subcommand};
 
 #[derive(Subcommand)]
@@ -35,6 +37,6 @@ pub enum Commands{
         branch_name: String
     },
     Add{
-        file_name: String
+        file_name: PathBuf
     }
 }

@@ -1,8 +1,7 @@
 use crate::{RGitError, Result, internal::utils::{hash_content, update_index_contents}};
 use std::{fs, path::PathBuf};
 
-pub fn add_all_to_index(file_path:&String)->Result<()>{
-
+pub fn add_all_to_index(file_path:&PathBuf)->Result<()>{
     for entry in fs::read_dir(&file_path).unwrap(){
         let entry = entry.unwrap();
         let path = entry.path();
@@ -11,8 +10,8 @@ pub fn add_all_to_index(file_path:&String)->Result<()>{
         if file_name==".rgit".to_string() || file_name ==".git".to_string() || file_name =="target".to_string(){
             continue;
         }
-        if file_type.is_dir() && !fs::read_dir(path.to_str().unwrap())?.next().is_none(){
-            add_all_to_index(&path.to_string_lossy().to_string())?;
+        if file_type.is_dir() && !fs::read_dir(&path)?.next().is_none(){
+            add_all_to_index(&path)?;
         }else if file_type.is_file(){
             let contents=fs::read_to_string(&path)
                         .map_err(|e|RGitError::FileReadError { path: file_path.to_path_buf(), source: Box::new(e) })?;                
@@ -26,6 +25,7 @@ pub fn add_all_to_index(file_path:&String)->Result<()>{
             let (dirname,filename,_result) = hash_content(&store)?;
             let hex_string =format!("{}{}",dirname,filename);
             let index_path = format!(".rgit/index");
+            
             let abs_path = &path.to_str().unwrap()[2..];
             let index_entry = format!("100644 {} {}\n",abs_path,hex_string);
             let index_contents = fs::read_to_string(&index_path)?;
