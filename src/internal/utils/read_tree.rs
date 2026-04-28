@@ -6,7 +6,7 @@ pub fn read_tree(name:&String)->Result<String>{
     let decompressed_bytes =zlib_decoder(name)?;
 
     let pointer = 0;
-    let space = decompressed_bytes.iter().position(|x|*x==b' ').unwrap();
+    let space = decompressed_bytes.iter().position(|x|*x==b' ').ok_or(RGitError::NotValidHash { hash_name: name.to_string() })?;
     let obj_type = &decompressed_bytes[pointer..space];
     let obj_type = std::str::from_utf8(obj_type)
                                     .map_err(|e|RGitError::BytesToStringError { source: Box::new(e) })?;

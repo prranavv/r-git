@@ -1,5 +1,5 @@
 use std::{fmt::Display, path::PathBuf};
-use crate::internal::Mode;
+use crate::{error::RGitError, internal::Mode};
 
 #[derive(Debug)]
 pub struct IndexEntry{
@@ -15,29 +15,31 @@ impl IndexEntry{
     }
 }
 
-impl From<String> for IndexEntry{
-    fn from(value: String) -> Self {
+impl TryFrom<String> for IndexEntry{
+    type Error = RGitError;
+    fn try_from(value: String) -> Result<Self,Self::Error> {
         let parts:Vec<&str> = value.split(" ").collect();
         let mut iter = parts.iter();
-        let mode = iter.next().unwrap();
-        let file_path = iter.next().unwrap();
-        let hash = iter.next().unwrap();
+        let mode = iter.next().ok_or(RGitError::NotValidIndexEntry { index_entry: value.clone() })?;
+        let file_path = iter.next().ok_or(RGitError::NotValidIndexEntry { index_entry: value.clone() })?;
+        let hash = iter.next().ok_or(RGitError::NotValidIndexEntry { index_entry: value.clone() })?;
         let mode = Mode::from(*mode);
 
-        Self { mode, file_path: PathBuf::from(file_path), hash: hash.to_string() }
+        Ok(Self { mode, file_path: PathBuf::from(file_path), hash: hash.to_string() })
     }
 }
 
-impl From<&str> for IndexEntry{
-    fn from(value: &str) -> Self {
+impl TryFrom<&str> for IndexEntry{
+    type Error = RGitError;
+    fn try_from(value: &str) -> Result<Self,Self::Error> {
         let parts:Vec<&str> = value.split(" ").collect();
         let mut iter = parts.iter();
-        let mode = iter.next().unwrap();
-        let file_path = iter.next().unwrap();
-        let hash = iter.next().unwrap();
+        let mode = iter.next().ok_or(RGitError::NotValidIndexEntry { index_entry: value.into() })?;
+        let file_path = iter.next().ok_or(RGitError::NotValidIndexEntry { index_entry: value.into() })?;
+        let hash = iter.next().ok_or(RGitError::NotValidIndexEntry { index_entry: value.into() })?;
         let mode = Mode::from(*mode);
 
-        Self { mode, file_path: PathBuf::from(file_path), hash: hash.to_string() }
+        Ok(Self { mode, file_path: PathBuf::from(file_path), hash: hash.to_string() })
     }
 }
 

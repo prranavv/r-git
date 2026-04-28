@@ -3,10 +3,10 @@ use crate::{Result, internal::index_entry::IndexEntry};
 
 pub fn update_index_contents(index_contents:String,index_entry:String)->Result<()>{
     let lines = index_contents.lines();
-    let new_entry = IndexEntry::from(index_entry);
+    let new_entry = IndexEntry::try_from(index_entry)?;
     let mut result = String::new();
     for line in lines{
-        let line_entry = IndexEntry::from(line.to_string());
+        let line_entry = IndexEntry::try_from(line.to_string())?;
         if line_entry.file_path==new_entry.file_path{
             continue;
         }
