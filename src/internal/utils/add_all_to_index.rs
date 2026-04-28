@@ -2,8 +2,9 @@ use crate::{RGitError, Result, internal::utils::{hash_content, update_index_cont
 use std::{fs, path::PathBuf};
 
 pub fn add_all_to_index(file_path:&PathBuf)->Result<()>{
-    for entry in fs::read_dir(&file_path).unwrap(){
-        let entry = entry.unwrap();
+    for entry in fs::read_dir(&file_path)
+            .map_err(|e|RGitError::DirectoryReadError { path: file_path.into(), source: Box::new(e) })?{
+        let entry = entry?;
         let path = entry.path();
         let file_type = entry.file_type().map_err(|e|RGitError::Io(e))?;
         let file_name = entry.file_name().into_string().unwrap();
