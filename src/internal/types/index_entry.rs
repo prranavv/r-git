@@ -1,7 +1,7 @@
 use std::{fmt::Display, path::PathBuf};
 use crate::{error::RGitError, internal::Mode};
 
-#[derive(Debug)]
+#[derive(Debug,Clone)]
 pub struct IndexEntry{
     pub mode: Mode,
     pub file_path: PathBuf,

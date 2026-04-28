@@ -19,7 +19,9 @@ pub mod init_repo;
 pub mod update_index_contents;
 pub mod add_all_to_index;
 pub mod parse_index;
+pub mod build_tree_from_index;
 
+pub use build_tree_from_index::*;
 pub use parse_index::*;
 pub use add_all_to_index::*;
 pub use update_index_contents::*;
