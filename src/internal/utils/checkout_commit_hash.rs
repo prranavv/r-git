@@ -13,8 +13,8 @@ pub fn checkout_commit_hash(commit_hash:&String)->Result<()>{
         if line.starts_with("tree"){
             let parts: Vec<&str>=line.split(' ').collect();
             let mut iter = parts.iter();
-            let _parent = iter.next().unwrap();
-            let tree_hash = iter.next().unwrap().to_string();
+            let _parent = iter.next().ok_or(RGitError::NotValidHash { hash_name: commit_hash.to_string() })?;
+            let tree_hash = iter.next().ok_or(RGitError::NotValidHash { hash_name: commit_hash.to_string() })?.to_string();
             let cur_tree_hash = build_tree("./")?;
             let hex_string = hex::encode(cur_tree_hash);
             remove_cur_dir(&hex_string,&format!("./"))?;
