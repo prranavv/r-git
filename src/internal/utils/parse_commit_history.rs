@@ -1,5 +1,5 @@
 use chrono::DateTime;
-use crate::{Result,internal::utils::{get_parent_hash, read_object}};
+use crate::{Result, error::RGitError, internal::utils::{get_parent_hash, read_object}};
 
 pub fn parse_commit_history()->Result<String>{
     let mut head_commit = get_parent_hash();
@@ -26,7 +26,7 @@ pub fn parse_commit_history()->Result<String>{
             else if line.starts_with("parent"){
                 let parts:Vec<&str> = line.split(' ').collect();
                 let mut iter = parts.iter();
-                let _parent = iter.next().unwrap();
+                let _parent = iter.next().ok_or(RGitError::NotCommitHash)?;
                 let parent_hash = iter.next();
                 if let Some(e)=parent_hash{
                     head_commit=Some(e.to_string());
@@ -37,12 +37,13 @@ pub fn parse_commit_history()->Result<String>{
             else if line.starts_with("author"){
                 let parts: Vec<&str> = line.split(' ').collect();
                 let mut iter = parts.iter();
-                let author = iter.next().unwrap();
-                let author_name = iter.next().unwrap();
-                let author_email = iter.next().unwrap();
+                let author = iter.next().ok_or(RGitError::NotCommitHash)?;
+                let author_name = iter.next().ok_or(RGitError::NotCommitHash)?;
+                let author_email = iter.next().ok_or(RGitError::NotCommitHash)?;
                 
-                let timestamp: i64 = iter.next().unwrap().parse().unwrap();
-                let time = DateTime::from_timestamp_secs(timestamp).unwrap();
+                let timestamp= iter.next().ok_or(RGitError::NotCommitHash)?.parse::<i64>()
+                            .map_err(|e|RGitError::ParseIntError { source: Box::new(e) })?;
+                let time = DateTime::from_timestamp_secs(timestamp).ok_or(RGitError::CantGetDateTime)?;
                 let date = format!("Date: {}\n\n",time.format("%a %b %d %H:%M:%S %Y %z"));
                 let author_string = format!("{}: {} {}\n",author,author_name,author_email);
 

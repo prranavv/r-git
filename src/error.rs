@@ -75,6 +75,16 @@ pub enum RGitError{
         index_entry: String
     },
 
+    #[error("error: erroring parsing integer \ncaused by the error: {source}")]
+    ParseIntError{
+        #[source]
+        source: Box<dyn std::error::Error>,
+    },
+
+    #[error("error: error getting currend date time")]
+    CantGetDateTime,
+
     #[error("io error: {0}")]
     Io(#[from] io::Error),    
 }
+
