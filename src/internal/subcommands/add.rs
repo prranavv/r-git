@@ -6,8 +6,8 @@ pub fn add(file_path: &PathBuf)->Result<()>{
         add_all_to_index(file_path)?;
         return Ok(())
     }
+    let file_path = file_path.strip_prefix("./").unwrap_or(file_path);
     
-    let file_path = file_path.strip_prefix("./").unwrap().to_path_buf();
     let contents=fs::read_to_string(&file_path)
                             .map_err(|e|RGitError::FileReadError { path: file_path.to_path_buf(), source: Box::new(e) })?;                
 
