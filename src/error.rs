@@ -84,6 +84,9 @@ pub enum RGitError{
     #[error("error: error getting currend date time")]
     CantGetDateTime,
 
+    #[error("error: cannot create a new branch without having atleast 1 commit")]
+    CantCreateNewBranch,
+
     #[error("io error: {0}")]
     Io(#[from] io::Error),    
 }
