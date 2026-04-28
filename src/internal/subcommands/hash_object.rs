@@ -27,7 +27,7 @@ pub fn hash_object(name:&String,write:&bool,stdin:&bool)->Result<()>{
     writeln!(stdout,"{}",hex_string.trim())?;
 
     if *write{
-        zlib_encoder(store.to_vec(), &dirname, &filename)?   
+        zlib_encoder(store.to_vec(), &dirname, &filename)?
     };
     Ok(())
 }

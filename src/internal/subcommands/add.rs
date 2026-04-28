@@ -1,4 +1,4 @@
-use crate::{RGitError, Result, internal::utils::{add_all_to_index, hash_content, update_index_contents}};
+use crate::{RGitError, Result, internal::utils::{add_all_to_index, hash_content, update_index_contents, zlib_encoder}};
 use std::{fs, path::PathBuf};
 
 pub fn add(file_path: &PathBuf)->Result<()>{
@@ -20,6 +20,7 @@ pub fn add(file_path: &PathBuf)->Result<()>{
     let (dirname,filename,_result) = hash_content(&store)?;
     let hex_string =format!("{}{}",dirname,filename);
 
+    zlib_encoder(store.to_vec(), &dirname, &filename)?;
     let index_path = format!(".rgit/index");
     let index_entry = format!("100644 {} {}\n",file_path.display(),hex_string);
     let index_contents = fs::read_to_string(&index_path)?;
