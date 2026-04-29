@@ -31,13 +31,14 @@ The best way to answer those questions is to build it.
 
 - **Content-addressable object store** — blobs, trees, and commits are all SHA-1 hashed and zlib-compressed under `.rgit/objects/`, just like real Git
 - **Plumbing commands** — `hash-object`, `cat-file`, `write-tree`, `ls-tree`, `commit-tree` for poking at the object store directly
-- **Porcelain commands** — `init`, `add`, `rm`, `commit`, `status`, `log`, `checkout`, `branch` for the everyday workflow
+- **Porcelain commands** — `init`, `add`, `rm`, `commit`, `status`, `diff`, `log`, `checkout`, `branch` for the everyday workflow
 - **Untrack without deleting** — `rm --cached` drops a file from the index while leaving it in your working directory, useful for files that shouldn't have been tracked in the first place
 - **Real staging area** — `add` writes to a `.rgit/index` file that `commit` reads, mirroring Git's two-phase commit model
 - **Stage-and-commit shortcut** — `commit -a` auto-stages every tracked file that's been modified or deleted before writing the commit, so you can skip the explicit `add` step
 - **Branches and HEAD** — refs live under `.rgit/refs/heads/` and `HEAD` tracks the current branch (or a detached commit)
 - **Detached HEAD checkout** — checkout by branch name to switch branches, or by commit hash to enter detached HEAD state
 - **Three-way status** — `status` diffs `HEAD` ↔ `index` ↔ working directory to show staged, unstaged, and untracked changes
+- **Line-level diffs** — `diff` shows the actual line changes between your working directory and the index, so you can see exactly what's unstaged
 
 ---
 
@@ -52,6 +53,7 @@ The best way to answer those questions is to build it.
 | `commit -m <msg>` | porcelain | Build a tree from the index, write a commit object, advance the current branch |
 | `commit -a -m <msg>` | porcelain | Auto-stage all modified and deleted tracked files, then commit |
 | `status` | porcelain | Show staged changes, unstaged changes, and untracked files |
+| `diff` | porcelain | Show line-by-line changes between the working directory and the index (unstaged changes) |
 | `log` | porcelain | Walk the commit history from HEAD backwards through `parent` pointers |
 | `branch <name>` | porcelain | Create a new branch pointing at the current commit |
 | `checkout <ref>` | porcelain | Switch to a branch (by name) or enter detached HEAD (by commit hash) |
@@ -120,8 +122,14 @@ rgit commit -m "initial commit"
 rgit branch feature
 rgit checkout feature
 
-# Modify a tracked file and commit it in one shot
+# Modify a tracked file and see what changed before staging
 echo "fn main() { println!(\"hi\"); }" > main.rs
+rgit diff
+# diff --rgit a/main.rs b/main.rs
+# - fn main() {}
+# + fn main() { println!("hi"); }
+
+# Commit it in one shot with -a
 rgit commit -a -m "add print"
 
 # Remove a file from the working tree and stage the deletion
