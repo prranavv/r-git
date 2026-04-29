@@ -165,35 +165,6 @@ rgit ls-tree <tree-hash>
 
 ---
 
-## Tech Stack
-
-| Component | Crate | Purpose |
-|---|---|---|
-| **Language** | Rust | Memory-safe systems programming with zero-cost abstractions |
-| **CLI** | `clap` | Derive-based argument parsing with subcommands |
-| **Errors** | `thiserror` | Ergonomic error enum with `#[from]` and `#[source]` |
-| **Hashing** | `sha1` | SHA-1 digests for content addressing |
-| **Compression** | `flate2` | Zlib encode/decode for object storage |
-| **Hex** | `hex` | Hex-encoding object hashes |
-
----
-
-## How It Works
-
-**Objects.** Every file you commit, every directory snapshot, and every commit is stored as an *object* under `.rgit/objects/<first 2 chars of hash>/<remaining 38 chars>`. The hash is SHA-1 of `<type> <length>\0<content>`. The file on disk is that same payload, zlib-compressed.
-
-- A **blob** is the contents of a file.
-- A **tree** is a list of entries — each one a mode, a name, and a hash pointing to a blob (file) or another tree (subdirectory).
-- A **commit** points at a tree, optionally points at a parent commit, and carries the author and message.
-
-**The index.** `.rgit/index` is a plain text file where each line is `<mode> <path> <hash>`. `add` writes to it; `commit` reads from it to build the tree.
-
-**Refs and HEAD.** `.rgit/refs/heads/<branch>` is a file containing a commit hash. `.rgit/HEAD` either contains `ref: refs/heads/<branch>` (attached) or a raw commit hash (detached). `commit` updates whatever branch HEAD points at; `checkout` updates HEAD itself.
-
-**Status.** `status` is just three set comparisons: HEAD-tree vs index gives staged changes, index vs working directory gives unstaged changes, working directory minus index gives untracked.
-
----
-
 ## FAQ's
 
 **"Why build Git from scratch?"**
