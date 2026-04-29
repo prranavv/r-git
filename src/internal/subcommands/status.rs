@@ -27,6 +27,13 @@ pub fn status()->Result<()>{
             hash_set.insert(i.file_path.clone());
         }
     }
+    for i in head_index.iter(){
+        if head_index.contains(i)&& !index.contains(&i){
+            let modified = format!("\tdeleted: {}\n",i.file_path.display());
+            result.push_str(&modified);
+            hash_set.insert(i.file_path.clone());
+        }
+    }
     hash_set.clear();
 
     result.push_str("\nChanges not staged for commit:\n");
@@ -44,7 +51,7 @@ pub fn status()->Result<()>{
     }
 
     for i in index.iter(){
-        if !working_dir.contains(i)&& !hash_set.contains(&i.file_path){
+        if !working_dir.contains(i)&& index.contains(&i) && !hash_set.contains(&i.file_path){
             let modified = format!("\tdeleted: {}\n",i.file_path.display());
             result.push_str(&modified);
             hash_set.insert(i.file_path.clone());
