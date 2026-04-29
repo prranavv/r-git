@@ -10,14 +10,14 @@ pub enum RGitError{
         source: Box<dyn std::error::Error>,
     },
 
-    #[error("error: failed to read the file :{path} \ncaused by the error: {source}")]
+    #[error("error: failed to read the file : {path} \ncaused by the error: {source}")]
     FileReadError{
         path:PathBuf,
         #[source]
         source: Box<dyn std::error::Error>,
     },
 
-    #[error("error: failed to write the file :{path} \ncaused by the error: {source}")]
+    #[error("error: failed to write the file : {path} \ncaused by the error: {source}")]
     FileWriteError{
         path:PathBuf,
         #[source]

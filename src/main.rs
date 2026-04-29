@@ -1,4 +1,5 @@
 use clap::{Parser};
+use crossterm::style::Stylize;
 use crate::error::RGitError;
 use std::io;
 use std::io::Write;
@@ -20,98 +21,98 @@ fn main()->Result<()>{
         Commands::Init=>{
             match internal::init(){
                 Ok(_)=>{},
-                Err(e)=>writeln!(stderr,"{}",e.to_string())?
+                Err(e)=>writeln!(stderr,"{}",e.to_string().red())?
             }
             Ok(())
         },
         Commands::HashObject { name,write ,stdin}=>{
             match internal::hash_object(name, write, stdin){
                 Ok(_)=>{},
-                Err(e)=>writeln!(stderr,"{}",e.to_string())?
+                Err(e)=>writeln!(stderr,"{}",e.to_string().red())?
             }
             Ok(())
         }
         Commands::CatFile { pretty_print ,type_of,hash}=>{
             match internal::cat_file(&hash,*type_of,*pretty_print){
                 Ok(_)=>{},
-                Err(e)=>writeln!(stderr,"{}",e.to_string())?
+                Err(e)=>writeln!(stderr,"{}",e.to_string().red())?
             }
             Ok(())
         },
         Commands::WriteTree=>{
             match internal::write_tree(){
                 Ok(_)=>{},
-                Err(e)=>writeln!(stderr,"{}",e.to_string())?
+                Err(e)=>writeln!(stderr,"{}",e.to_string().red())?
             }
             Ok(())
         },
         Commands::LsTree { name }=>{
             match internal::ls_tree(name){
                 Ok(_)=>{},
-                Err(e)=>writeln!(stderr,"{}",e.to_string())?
+                Err(e)=>writeln!(stderr,"{}",e.to_string().red())?
             }
             Ok(())
         },
         Commands::CommitTree { tree_hash, message }=>{
             match internal::commit_tree(tree_hash,message){
                 Ok(_)=>{},
-                Err(e)=>writeln!(stderr,"{}",e.to_string())?
+                Err(e)=>writeln!(stderr,"{}",e.to_string().red())?
             }
             Ok(())
         },
         Commands::Log=>{
             match internal::log(){
                 Ok(_)=>{},
-                Err(e)=>writeln!(stderr,"{}",e.to_string())?
+                Err(e)=>writeln!(stderr,"{}",e.to_string().red())?
             }
             Ok(())
         },
         Commands::Checkout { commit_hash }=>{
             match internal::checkout(commit_hash){
                 Ok(_)=>{},
-                Err(e)=>writeln!(stderr,"{}",e.to_string())?    
+                Err(e)=>writeln!(stderr,"{}",e.to_string().red())?
             }
             Ok(())
         },
         Commands::Branch { branch_name }=>{
             match internal::branch(branch_name.to_string()){
                 Ok(_)=>{},
-                Err(e)=>writeln!(stderr,"{}",e.to_string())?    
+                Err(e)=>writeln!(stderr,"{}",e.to_string().red())?
             }
             Ok(())
         },
         Commands::Add { file_name }=>{
             match internal::add(file_name){
                 Ok(_)=>{},
-                Err(e)=>writeln!(stderr,"{}",e.to_string())?  
+                Err(e)=>writeln!(stderr,"{}",e.to_string().red())?
             }
             Ok(())
         },
         Commands::Commit { message ,all}=>{
             match internal::commit(message,*all){
                 Ok(_)=>{},
-                Err(e)=>writeln!(stderr,"{}",e.to_string())?  
+                Err(e)=>writeln!(stderr,"{}",e.to_string().red())?
             }
             Ok(())
         },
         Commands::Status=>{
             match internal::status(){
                 Ok(_)=>{},
-                Err(e)=>writeln!(stderr,"{}",e.to_string())?  
+                Err(e)=>writeln!(stderr,"{}",e.to_string().red())?
             }
             Ok(())
         },
         Commands::Rm { file_path,cached }=>{
             match internal::rm(file_path,*cached){
                 Ok(_)=>{},
-                Err(e)=>writeln!(stderr,"{}",e.to_string())?  
+                Err(e)=>writeln!(stderr,"{}",e.to_string().red())?
             }
             Ok(())
         },
         Commands::Diff { file_path }=>{
             match internal::diff(file_path){
                 Ok(_)=>{},
-                Err(e)=>writeln!(stderr,"{}",e.to_string())?  
+                Err(e)=>writeln!(stderr,"{}",e.to_string().red())?
             }
             Ok(())
         }
