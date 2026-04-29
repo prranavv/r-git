@@ -10,7 +10,7 @@
 </p>
 
 <p align="center">
-  A from-scratch reimplementation of Git's plumbing and porcelain commands in Rust. Builds the same content-addressable object store, index format, and refs layout that real Git uses — just with <code>.rgit</code> instead of <code>.git</code>.
+  A from-scratch(parts of it) reimplementation of Git's plumbing and porcelain commands in Rust. Builds the same content-addressable object store, index format, and refs layout that real Git uses — just with <code>.rgit</code> instead of <code>.git</code>.
 </p>
 
 ---
