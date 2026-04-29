@@ -1,5 +1,6 @@
-use std::{path::PathBuf};
+use std::{io, path::PathBuf};
 use crossterm::style::Stylize;
+use std::io::Write;
 use crate::{Result, error::RGitError, internal::utils::{parse_index, parse_working_dir, read_object}};
 
 pub fn diff(file_path:&PathBuf)->Result<()>{
@@ -61,11 +62,12 @@ pub fn diff(file_path:&PathBuf)->Result<()>{
 
     result.reverse();
 
+    let mut stdout = io::stdout();
     for (tag, line) in result {
         match tag {
-            " " => println!(" {}", line),
-            "-" => println!("-{}", line.red()),
-            "+" => println!("+{}", line.green()),
+            " " => writeln!(stdout," {}", line)?,
+            "-" => writeln!(stdout,"-{}", line.red())?,
+            "+" => writeln!(stdout,"+{}", line.green())?,
             _ => {}
         }
     }
