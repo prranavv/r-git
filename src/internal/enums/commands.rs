@@ -3,9 +3,6 @@ use std::path::PathBuf;
 use clap::{Subcommand};
 
 #[derive(Subcommand)]
-#[command(name="rgit")]
-#[command(version="1.0.0")]
-#[command(about = "Rust Implementation of Git", long_about = None)]
 pub enum Commands{
     /// Create an empty Git repository or reinitialize an existing one
     Init,
