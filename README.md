@@ -31,8 +31,10 @@ The best way to answer those questions is to build it.
 
 - **Content-addressable object store** — blobs, trees, and commits are all SHA-1 hashed and zlib-compressed under `.rgit/objects/`, just like real Git
 - **Plumbing commands** — `hash-object`, `cat-file`, `write-tree`, `ls-tree`, `commit-tree` for poking at the object store directly
-- **Porcelain commands** — `init`, `add`, `commit`, `status`, `log`, `checkout`, `branch` for the everyday workflow
+- **Porcelain commands** — `init`, `add`, `rm`, `commit`, `status`, `log`, `checkout`, `branch` for the everyday workflow
+- **Untrack without deleting** — `rm --cached` drops a file from the index while leaving it in your working directory, useful for files that shouldn't have been tracked in the first place
 - **Real staging area** — `add` writes to a `.rgit/index` file that `commit` reads, mirroring Git's two-phase commit model
+- **Stage-and-commit shortcut** — `commit -a` auto-stages every tracked file that's been modified or deleted before writing the commit, so you can skip the explicit `add` step
 - **Branches and HEAD** — refs live under `.rgit/refs/heads/` and `HEAD` tracks the current branch (or a detached commit)
 - **Detached HEAD checkout** — checkout by branch name to switch branches, or by commit hash to enter detached HEAD state
 - **Three-way status** — `status` diffs `HEAD` ↔ `index` ↔ working directory to show staged, unstaged, and untracked changes
@@ -45,7 +47,10 @@ The best way to answer those questions is to build it.
 |---|---|---|
 | `init` | porcelain | Create a `.rgit/` directory with `objects/`, `refs/heads/`, `HEAD`, and an empty index |
 | `add <path>` | porcelain | Hash a file (or `.` for everything) and write its entry into the index |
+| `rm <path>` | porcelain | Remove a file from the working directory and stage its deletion in the index |
+| `rm --cached <path>` | porcelain | Stage the file's removal from the index but leave it in the working directory |
 | `commit -m <msg>` | porcelain | Build a tree from the index, write a commit object, advance the current branch |
+| `commit -a -m <msg>` | porcelain | Auto-stage all modified and deleted tracked files, then commit |
 | `status` | porcelain | Show staged changes, unstaged changes, and untracked files |
 | `log` | porcelain | Walk the commit history from HEAD backwards through `parent` pointers |
 | `branch <name>` | porcelain | Create a new branch pointing at the current commit |
@@ -115,10 +120,17 @@ rgit commit -m "initial commit"
 rgit branch feature
 rgit checkout feature
 
-# Modify, stage, and commit
+# Modify a tracked file and commit it in one shot
 echo "fn main() { println!(\"hi\"); }" > main.rs
-rgit add main.rs
-rgit commit -m "add print"
+rgit commit -a -m "add print"
+
+# Remove a file from the working tree and stage the deletion
+rgit rm greeting.txt
+rgit commit -m "drop greeting"
+
+# Or untrack a file without deleting it from disk
+rgit rm --cached secrets.env
+rgit commit -m "stop tracking secrets.env"
 
 # See the history
 rgit log
