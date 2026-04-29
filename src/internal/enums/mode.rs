@@ -1,7 +1,7 @@
 use std::fmt::Display;
 
 #[repr(u32)]
-#[derive(Clone, Copy,Debug)]
+#[derive(Clone, Copy,Debug,PartialEq,Eq, Hash)]
 pub enum Mode{
     File = 0o100644,
     Executable = 0o100755,

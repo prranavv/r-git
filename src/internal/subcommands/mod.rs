@@ -9,7 +9,9 @@ pub mod checkout;
 pub mod branch;
 pub mod add;
 pub mod commit;
+pub mod status;
 
+pub use status::*;
 pub use commit::*;
 pub use add::*;
 pub use branch::*;

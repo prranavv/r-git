@@ -42,5 +42,6 @@ pub enum Commands{
     Commit{
         #[arg(short='m')]
         message:String
-    }
+    },
+    Status
 }
