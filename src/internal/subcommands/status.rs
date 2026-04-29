@@ -28,7 +28,7 @@ pub fn status()->Result<()>{
         }
     }
     for i in head_index.iter(){
-        if head_index.contains(i)&& !index.contains(&i){
+        if head_index.contains(i)&& !index.contains(&i) && !hash_set.contains(&i.file_path){
             let modified = format!("\tdeleted: {}\n",i.file_path.display());
             result.push_str(&modified);
             hash_set.insert(i.file_path.clone());
