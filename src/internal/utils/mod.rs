@@ -23,7 +23,9 @@ pub mod build_tree_from_index;
 pub mod build_from_head;
 pub mod parse_head;
 pub mod parse_working_dir;
+pub mod remove_index_entry;
 
+pub use remove_index_entry::*;
 pub use parse_working_dir::*;
 pub use parse_head::*;
 pub use build_from_head::*;

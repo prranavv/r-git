@@ -1,4 +1,4 @@
-use crate::{RGitError, Result, internal::utils::{add_all_to_index, hash_content, update_index_contents, zlib_encoder}};
+use crate::{Result, internal::utils::{add_all_to_index, hash_content, remove_index_entry, update_index_contents, zlib_encoder}};
 use std::{fs, path::PathBuf};
 
 pub fn add(file_path: &PathBuf)->Result<()>{
@@ -8,9 +8,10 @@ pub fn add(file_path: &PathBuf)->Result<()>{
     }
     let file_path = file_path.strip_prefix("./").unwrap_or(file_path);
     
-    let contents=fs::read_to_string(&file_path)
-                            .map_err(|e|RGitError::FileReadError { path: file_path.to_path_buf(), source: Box::new(e) })?;                
-
+    let contents=fs::read_to_string(&file_path).unwrap_or(String::new());
+    if contents=="".to_string(){
+        return remove_index_entry(file_path)
+    }
     let blob_contents = contents.as_bytes();
     let header = format!("blob {}\0",blob_contents.len());
     let mut store = Vec::new();
