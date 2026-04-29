@@ -10,7 +10,9 @@ pub mod branch;
 pub mod add;
 pub mod commit;
 pub mod status;
+pub mod rm;
 
+pub use rm::*;
 pub use status::*;
 pub use commit::*;
 pub use add::*;

@@ -100,6 +100,13 @@ fn main()->Result<()>{
                 Err(e)=>writeln!(stderr,"{}",e.to_string())?  
             }
             Ok(())
+        },
+        Commands::Rm { file_path }=>{
+            match internal::rm(file_path){
+                Ok(_)=>{},
+                Err(e)=>writeln!(stderr,"{}",e.to_string())?  
+            }
+            Ok(())
         }
     }
 }

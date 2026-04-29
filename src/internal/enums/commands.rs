@@ -45,5 +45,8 @@ pub enum Commands{
         #[arg(short='a')]
         all:bool,
     },
-    Status
+    Status,
+    Rm{
+        file_path:PathBuf
+    }
 }
