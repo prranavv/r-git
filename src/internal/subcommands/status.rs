@@ -1,5 +1,6 @@
 use std::{collections::HashSet};
-
+use std::io;
+use std::io::Write;
 use crate::{Result, internal::{utils::{parse_head, parse_index, parse_working_dir}}};
 
 pub fn status()->Result<()>{
@@ -17,14 +18,17 @@ pub fn status()->Result<()>{
                     hash_set.insert(i.file_path.clone());
                 }
             }
-            if !head_index.contains(i) && !hash_set.contains(&i.file_path){
-                let modified = format!("\tnew file: {}\n",i.file_path.display());
-                result.push_str(&modified);
-                hash_set.insert(i.file_path.clone());
-            }
+        }
+    }
+    for i in index.iter(){
+        if !head_index.contains(i) && !hash_set.contains(&i.file_path){
+            let modified = format!("\tnew file: {}\n",i.file_path.display());
+            result.push_str(&modified);
+            hash_set.insert(i.file_path.clone());
         }
     }
     hash_set.clear();
+
     result.push_str("\nChanges not staged for commit:\n");
     let working_dir = parse_working_dir()?;
     for w in working_dir.iter(){
@@ -46,13 +50,14 @@ pub fn status()->Result<()>{
             hash_set.insert(i.file_path.clone());
         }
     }
-
+    result.push_str("\nUntracked files:\n");
     for w in working_dir.iter(){
         if !index.contains(w) && !hash_set.contains(&w.file_path){
-            let modified = format!("\nUntracked files: \n\t{}\n",w.file_path.display());
+            let modified = format!("\t{}\n",w.file_path.display());
             result.push_str(&modified);
         }
     }
-    println!("{}",result);
+    let mut stdout = io::stdout();
+    writeln!(stdout,"{}",result)?;
     Ok(())
 }
