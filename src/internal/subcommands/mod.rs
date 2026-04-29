@@ -11,7 +11,9 @@ pub mod add;
 pub mod commit;
 pub mod status;
 pub mod rm;
+pub mod diff;
 
+pub use diff::*;
 pub use rm::*;
 pub use status::*;
 pub use commit::*;

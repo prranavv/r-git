@@ -77,5 +77,8 @@ pub enum Commands{
         /// Use this option to unstage and remove paths only from the index. Working tree files, whether modified or not, will be left alone.
         #[arg(long="cached")]
         cached:bool,
+    },
+    Diff{
+        file_path:PathBuf
     }
 }

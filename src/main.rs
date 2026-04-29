@@ -107,6 +107,13 @@ fn main()->Result<()>{
                 Err(e)=>writeln!(stderr,"{}",e.to_string())?  
             }
             Ok(())
+        },
+        Commands::Diff { file_path }=>{
+            match internal::diff(file_path){
+                Ok(_)=>{},
+                Err(e)=>writeln!(stderr,"{}",e.to_string())?  
+            }
+            Ok(())
         }
     }
 }
