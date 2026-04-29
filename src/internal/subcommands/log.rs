@@ -7,8 +7,9 @@ use crossterm::terminal::{disable_raw_mode, enable_raw_mode};
 pub fn log()->Result<()>{
     let result  = parse_commit_history()?;
     let mut stdout = io::stdout();
-    writeln!(stdout,"{}",result.trim())?;
-    
+    for r in result{
+        writeln!(stdout,"{}",r)?;
+    }
     enable_raw_mode()?;
     loop {
         if event::poll(std::time::Duration::from_millis(100))? {

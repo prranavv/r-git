@@ -1,9 +1,10 @@
 use chrono::DateTime;
+use crossterm::style::{StyledContent, Stylize};
 use crate::{Result, error::RGitError, internal::utils::{get_parent_hash, read_object}};
 
-pub fn parse_commit_history()->Result<String>{
+pub fn parse_commit_history()->Result<Vec<StyledContent<String>>>{
     let mut head_commit = get_parent_hash();
-    let mut result = String::new();
+    let mut result: Vec<StyledContent<String>> = Vec::new();
     while let Some(ref h)=head_commit{
         let head =h.trim();
         if head==""{
@@ -11,8 +12,8 @@ pub fn parse_commit_history()->Result<String>{
         }    
         let (_obj_type,content) = read_object(&head.trim().to_string())?;
         let lines = content.lines();
-        let commit_hash_line = format!("commit {}\n",head);
-        result.push_str(&commit_hash_line);
+        let commit_hash_line = format!("commit {}",head).yellow();
+        result.push(commit_hash_line);
         for line in lines{
             if line.trim().is_empty(){
                 continue;
@@ -44,15 +45,15 @@ pub fn parse_commit_history()->Result<String>{
                 let timestamp= iter.next().ok_or(RGitError::NotCommitHash)?.parse::<i64>()
                             .map_err(|e|RGitError::ParseIntError { source: Box::new(e) })?;
                 let time = DateTime::from_timestamp_secs(timestamp).ok_or(RGitError::CantGetDateTime)?;
-                let date = format!("Date: {}\n\n",time.format("%a %b %d %H:%M:%S %Y %z"));
-                let author_string = format!("{}: {} {}\n",author,author_name,author_email);
+                let date = format!("Date: {}\n",time.format("%a %b %d %H:%M:%S %Y %z"));
+                let author_string = format!("{}: {} {}",author,author_name,author_email);
 
-                result.push_str(&author_string);
-                result.push_str(&date);
+                result.push(author_string.white());
+                result.push(date.white());
             }else if line.starts_with("commiter"){
                 continue
             }else {
-                result.push_str(&format!("\t{}\n\n",line));
+                result.push(format!("\t{}\n",line).white());
             }
         }
     }
