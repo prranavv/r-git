@@ -8,7 +8,6 @@ pub fn log()->Result<()>{
     let result  = parse_commit_history()?;
     let mut stdout = io::stdout();
     writeln!(stdout,"{}",result.trim())?;
-    println!("\nPress any key (q to exit)...");
     
     // Enable raw mode to read keypresses immediately
     enable_raw_mode()?;
