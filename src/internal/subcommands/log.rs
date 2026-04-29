@@ -9,9 +9,7 @@ pub fn log()->Result<()>{
     let mut stdout = io::stdout();
     writeln!(stdout,"{}",result.trim())?;
     
-    // Enable raw mode to read keypresses immediately
     enable_raw_mode()?;
-
     loop {
         if event::poll(std::time::Duration::from_millis(100))? {
             if let Event::Key(key) = event::read()? {
@@ -21,8 +19,6 @@ pub fn log()->Result<()>{
             }
         }
     }
-
-    // Restore terminal to default mode
     disable_raw_mode()?;
     Ok(())
 }
