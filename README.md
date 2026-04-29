@@ -124,10 +124,6 @@ rgit checkout feature
 
 # Modify a tracked file and see what changed before staging
 echo "fn main() { println!(\"hi\"); }" > main.rs
-rgit diff
-# diff --rgit a/main.rs b/main.rs
-# - fn main() {}
-# + fn main() { println!("hi"); }
 
 # Commit it in one shot with -a
 rgit commit -a -m "add print"
