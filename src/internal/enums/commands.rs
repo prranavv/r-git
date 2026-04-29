@@ -41,7 +41,9 @@ pub enum Commands{
     },
     Commit{
         #[arg(short='m')]
-        message:String
+        message:String,
+        #[arg(short='a')]
+        all:bool,
     },
     Status
 }

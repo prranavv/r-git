@@ -87,8 +87,8 @@ fn main()->Result<()>{
             }
             Ok(())
         },
-        Commands::Commit { message }=>{
-            match internal::commit(message){
+        Commands::Commit { message ,all}=>{
+            match internal::commit(message,*all){
                 Ok(_)=>{},
                 Err(e)=>writeln!(stderr,"{}",e.to_string())?  
             }
