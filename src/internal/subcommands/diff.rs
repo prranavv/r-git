@@ -1,8 +1,6 @@
 use std::{path::PathBuf};
-
+use crossterm::style::Stylize;
 use crate::{Result, error::RGitError, internal::utils::{parse_index, parse_working_dir, read_object}};
-
-
 
 pub fn diff(file_path:&PathBuf)->Result<()>{
     let working_dir = parse_working_dir()?;
@@ -66,8 +64,8 @@ pub fn diff(file_path:&PathBuf)->Result<()>{
     for (tag, line) in result {
         match tag {
             " " => println!(" {}", line),
-            "-" => println!("-{}", line),
-            "+" => println!("+{}", line),
+            "-" => println!("-{}", line.red()),
+            "+" => println!("+{}", line.green()),
             _ => {}
         }
     }
