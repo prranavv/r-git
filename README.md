@@ -24,17 +24,6 @@ The best way to answer those questions is to build it.
 ## The Solution
 
 `r-git` is a Rust implementation of Git's core data model: a content-addressable object store keyed by SHA-1 hashes, a staging area (the index), refs that point to commits, and a HEAD that points to a branch. Each command is implemented from scratch — no calls out to `git` under the hood.
-
-The project is split into a thin command layer that handles CLI parsing and I/O, and an internal layer that does the real work:
-
-| Layer | Module | Responsibility |
-|:---:|---|---|
-| **1** | `cli` | Clap-based argument parsing, subcommand routing |
-| **2** | `internal::commands` | One file per Git command — `init`, `add`, `commit`, `status`, etc. |
-| **3** | `internal::utils` | Object hashing, zlib compression, tree building, index parsing, ref management |
-
-Errors flow back up through a single `RGitError` enum with `thiserror`, so every failure carries context about which file or operation went wrong.
-
 ---
 
 ## Features
@@ -46,7 +35,6 @@ Errors flow back up through a single `RGitError` enum with `thiserror`, so every
 - **Branches and HEAD** — refs live under `.rgit/refs/heads/` and `HEAD` tracks the current branch (or a detached commit)
 - **Detached HEAD checkout** — checkout by branch name to switch branches, or by commit hash to enter detached HEAD state
 - **Three-way status** — `status` diffs `HEAD` ↔ `index` ↔ working directory to show staged, unstaged, and untracked changes
-- **Structured errors** — every failure path returns a typed `RGitError` variant with the offending path and the underlying cause
 
 ---
 
