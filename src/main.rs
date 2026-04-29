@@ -101,8 +101,8 @@ fn main()->Result<()>{
             }
             Ok(())
         },
-        Commands::Rm { file_path }=>{
-            match internal::rm(file_path){
+        Commands::Rm { file_path,cached }=>{
+            match internal::rm(file_path,*cached){
                 Ok(_)=>{},
                 Err(e)=>writeln!(stderr,"{}",e.to_string())?  
             }

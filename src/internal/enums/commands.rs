@@ -47,6 +47,8 @@ pub enum Commands{
     },
     Status,
     Rm{
-        file_path:PathBuf
+        file_path:PathBuf,
+        #[arg(long="cached")]
+        cached:bool,
     }
 }
