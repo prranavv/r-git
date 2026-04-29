@@ -90,6 +90,12 @@ pub enum RGitError{
     #[error("error: cannot get head branch")]
     CantGetHeadBranch,
 
+    #[error("error: cant get the diff of a new file")]
+    UnTrackedFile,
+
+    #[error("error: erroring in converting PathBuf to str")]
+    PathToStr,
+    
     #[error("io error: {0}")]
     Io(#[from] io::Error),    
 }

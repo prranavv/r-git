@@ -28,7 +28,7 @@ pub fn add_all_to_index(file_path:&PathBuf)->Result<()>{
             zlib_encoder(store.to_vec(), &dirname, &filename)?;
             let index_path = format!(".rgit/index");
             
-            let abs_path = &path.to_str().unwrap()[2..];
+            let abs_path = &path.to_str().ok_or(RGitError::PathToStr)?[2..];
             let index_entry = format!("100644 {} {}\n",abs_path,hex_string);
             let index_contents = fs::read_to_string(&index_path)?;
             update_index_contents(index_contents,index_entry)?;
