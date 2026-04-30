@@ -94,7 +94,10 @@ pub fn diff(file_path:&PathBuf)->Result<()>{
         }
     }
     let mut stdout = io::stdout();
-
+    if change_indices.is_empty() {
+        writeln!(stdout,"No changes")?;
+        return Ok(());
+    }
     for (i, (start, end)) in merged.iter().enumerate() {
         if i > 0 {
             writeln!(stdout, "...")?;
