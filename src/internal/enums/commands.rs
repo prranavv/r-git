@@ -78,7 +78,9 @@ pub enum Commands{
         #[arg(long="cached")]
         cached:bool,
     },
+    /// Show changes between files
     Diff{
+        /// file to show the diff
         file_path:PathBuf
     }
 }
