@@ -61,14 +61,58 @@ pub fn diff(file_path:&PathBuf)->Result<()>{
     }
 
     result.reverse();
+    let mut change_indices = Vec::new();
 
+    for (idx, (tag, _)) in result.iter().enumerate() {
+        if *tag == "+" || *tag == "-" {
+            change_indices.push(idx);
+        }
+    }
+
+    let context = 3;
+    let mut ranges = Vec::new();
+
+    for &idx in &change_indices {
+        let start = idx.saturating_sub(context);
+        let end = (idx + context + 1).min(result.len());
+        ranges.push((start, end));
+    }
+
+    ranges.sort();
+
+    let mut merged = Vec::new();
+
+    for (start, end) in ranges {
+        if let Some((_last_start, last_end)) = merged.last_mut() {
+            if start <= *last_end {
+                *last_end = (*last_end).max(end);
+            } else {
+                merged.push((start, end));
+            }
+        } else {
+            merged.push((start, end));
+        }
+    }
     let mut stdout = io::stdout();
-    for (tag, line) in result {
-        match tag {
-            " " => writeln!(stdout," {}", line)?,
-            "-" => writeln!(stdout,"-{}", line.red())?,
-            "+" => writeln!(stdout,"+{}", line.green())?,
-            _ => {}
+
+    for (i, (start, end)) in merged.iter().enumerate() {
+        if i > 0 {
+            writeln!(stdout, "...")?;
+        }
+
+        for (tag, line) in &result[*start..*end] {
+            match *tag {
+                " " => writeln!(stdout, " {}", line)?,
+                "-" => {
+                    let styled = format!("-{}", line).red();
+                    writeln!(stdout, "{}", styled)?;
+                }
+                "+" => {
+                    let styled = format!("+{}", line).green();
+                    writeln!(stdout, "{}", styled)?;
+                }
+                _ => {}
+            }
         }
     }
     Ok(())
