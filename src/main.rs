@@ -74,8 +74,8 @@ fn main()->Result<()>{
             }
             Ok(())
         },
-        Commands::Branch { branch_name }=>{
-            match internal::branch(branch_name.to_string()){
+        Commands::Branch { branch_name ,a}=>{
+            match internal::branch(branch_name.clone(),*a){
                 Ok(_)=>{},
                 Err(e)=>writeln!(stderr,"{}",e.to_string().red())?
             }

@@ -54,6 +54,12 @@ pub enum RGitError{
     #[error("error: the file is not a tree")]
     NotTree,
 
+    #[error("error : git branch -a option does not take a branch name")]
+    NotValidArgForBranch,
+
+    #[error("error : git branch command requires a <BRANCH_NAME> to create a branch")]
+    NeedToHaveBranchName,
+
     #[error("error: the file is not a commit hash")]
     NotCommitHash,
 

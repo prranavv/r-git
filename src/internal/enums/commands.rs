@@ -51,8 +51,11 @@ pub enum Commands{
     },
     /// Create a new branch
     Branch{
+        /// Lists all the existing branches
+        #[arg(short)]
+        a:bool,
         /// The name of the branch to create
-        branch_name: String
+        branch_name: Option<String>
     },
     /// Add file contents to the index
     Add{
