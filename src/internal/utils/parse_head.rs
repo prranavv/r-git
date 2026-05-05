@@ -1,3 +1,5 @@
+use std::ops::Deref;
+
 use crate::error::RGitError;
 use crate::internal::index_entry::IndexEntry;
 use crate::{Result, internal::{utils::{build_from_head, get_parent_hash, read_object}}};
@@ -16,8 +18,8 @@ pub fn parse_head()->Result<Vec<IndexEntry>>{
             }else if line.starts_with("tree"){
                 let parts:Vec<&str> = line.split(' ').collect();
                 let mut iter = parts.iter();
-                let _tree = iter.next().ok_or(RGitError::NotValidIndexEntry { index_entry: h.clone() })?.trim();
-                let tree_hash = iter.next().ok_or(RGitError::NotValidIndexEntry { index_entry: h.clone() })?.trim();
+                let _tree = iter.next().ok_or(RGitError::NotValidIndexEntry { index_entry: h.deref().to_string() })?.trim();
+                let tree_hash = iter.next().ok_or(RGitError::NotValidIndexEntry { index_entry: h.deref().to_string() })?.trim();
                 result = build_from_head(tree_hash.to_string(), format!(""))?;
             }else{
                 continue;

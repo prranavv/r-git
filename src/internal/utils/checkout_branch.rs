@@ -1,4 +1,4 @@
-use crate::{Result, internal::utils::{checkout_commit_hash, get_parent_hash}};
+use crate::{Result, internal::{commit_hash::CommitHash, utils::{checkout_commit_hash, get_parent_hash}}};
 use std::fs;
 use crate::RGitError;
 
@@ -8,6 +8,7 @@ pub fn checkout_branch(branch_name:&String)->Result<()>{
 
 
     let head_commit = get_parent_hash().unwrap().trim().to_string();
+    let head_commit = CommitHash::new(head_commit);
     checkout_commit_hash(&head_commit)?;
     Ok(())
 }

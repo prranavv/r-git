@@ -1,11 +1,12 @@
 use std::path::PathBuf;
 
 use crate::error::RGitError;
+use crate::internal::commit_hash::CommitHash;
 use crate::internal::utils::{build_from_tree_hash, read_object, remove_cur_dir,build_tree};
 use crate::Result;
 
-pub fn checkout_commit_hash(commit_hash:&String)->Result<()>{
-    let (obj_type,content) = read_object(&commit_hash)?;
+pub fn checkout_commit_hash(commit_hash:&CommitHash)->Result<()>{
+    let (obj_type,content) = read_object(&commit_hash.to_string())?;
     if obj_type!="commit".to_string(){
         return Err(RGitError::NotCommitHash)
     }

@@ -1,6 +1,6 @@
 use chrono::DateTime;
 use crossterm::style::{StyledContent, Stylize};
-use crate::{Result, error::RGitError, internal::utils::{get_parent_hash, read_object}};
+use crate::{Result, error::RGitError, internal::{commit_hash::CommitHash, utils::{get_parent_hash, read_object}}};
 
 pub fn parse_commit_history()->Result<Vec<StyledContent<String>>>{
     let mut head_commit = get_parent_hash();
@@ -30,7 +30,7 @@ pub fn parse_commit_history()->Result<Vec<StyledContent<String>>>{
                 let _parent = iter.next().ok_or(RGitError::NotCommitHash)?;
                 let parent_hash = iter.next();
                 if let Some(e)=parent_hash{
-                    head_commit=Some(e.to_string());
+                    head_commit=Some(CommitHash::new(e.to_string()));
                 }else{
                     head_commit=None;
                 }
