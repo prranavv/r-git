@@ -26,7 +26,9 @@ pub mod parse_working_dir;
 pub mod remove_index_entry;
 pub mod get_branch_commit;
 pub mod get_commits_for_branch;
+pub mod get_head_branch_name;
 
+pub use get_head_branch_name::*;
 pub use get_branch_commit::*;
 pub use get_commits_for_branch::*;
 pub use remove_index_entry::*;

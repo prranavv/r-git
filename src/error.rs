@@ -63,7 +63,13 @@ pub enum RGitError{
     #[error("error: the file is not a commit hash")]
     NotCommitHash,
 
-    #[error("error: options '-t' and '-p' cannot be used togetherH")]
+    #[error("error: cant merge branches without having a single commit")]
+    NoHeadBranch,
+
+    #[error("error: no common commit found between branches")]
+    NoCommonCommit,
+
+    #[error("error: options '-t' and '-p' cannot be used together")]
     CantPrettyPrintAndType,
     
     #[error("error: a branch named {branch_name} already exists")]

@@ -1,5 +1,6 @@
 use std::{ops::Deref};
 
+#[derive(PartialEq, Eq, PartialOrd, Ord,Debug)]
 pub struct CommitHash(String);
 
 impl CommitHash{
