@@ -76,7 +76,7 @@ pub fn status()->Result<()>{
     let mut untracked = VecDeque::new();
     for w in working_dir.iter(){
         if !index.contains(w) && !hash_set.contains(&w.file_path){
-            let modified = format!("\t{}\n",w.file_path.display()).red();
+            let modified = format!("\t{}",w.file_path.display()).red();
             untracked.push_back(modified);
         }
     }
