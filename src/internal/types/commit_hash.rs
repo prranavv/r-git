@@ -15,8 +15,9 @@ impl Deref for CommitHash{
     }
 }
 
-impl Display for CommitHash{
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        writeln!(f,"{}",self.0)
+impl ToString for CommitHash{
+    fn to_string(&self) -> String {
+        let x = self.0.trim();
+        String::from(x)
     }
 }
