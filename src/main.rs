@@ -1,6 +1,7 @@
 use clap::{Parser};
 use crossterm::style::Stylize;
 use crate::error::RGitError;
+use crate::internal::commit_hash::CommitHash;
 use std::io;
 use std::io::Write;
 
@@ -68,7 +69,7 @@ fn main()->Result<()>{
             Ok(())
         },
         Commands::Checkout { commit_hash }=>{
-            match internal::checkout(commit_hash){
+            match internal::checkout(&CommitHash::new(commit_hash.to_string())){
                 Ok(_)=>{},
                 Err(e)=>writeln!(stderr,"{}",e.to_string().red())?
             }
@@ -111,6 +112,13 @@ fn main()->Result<()>{
         },
         Commands::Diff { file_path }=>{
             match internal::diff(file_path){
+                Ok(_)=>{},
+                Err(e)=>writeln!(stderr,"{}",e.to_string().red())?
+            }
+            Ok(())
+        },
+        Commands::Merge { branch_name }=>{
+            match internal::merge(branch_name){
                 Ok(_)=>{},
                 Err(e)=>writeln!(stderr,"{}",e.to_string().red())?
             }

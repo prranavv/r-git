@@ -12,7 +12,9 @@ pub mod commit;
 pub mod status;
 pub mod rm;
 pub mod diff;
+pub mod merge;
 
+pub use merge::*;
 pub use diff::*;
 pub use rm::*;
 pub use status::*;

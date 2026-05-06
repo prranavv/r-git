@@ -85,5 +85,8 @@ pub enum Commands{
     Diff{
         /// file to show the diff
         file_path:PathBuf
+    },
+    Merge{
+        branch_name:String
     }
 }
