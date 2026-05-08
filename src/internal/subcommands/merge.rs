@@ -1,8 +1,10 @@
 use crate::{
-    Result, error::RGitError, internal::{
+    Result,
+    error::RGitError,
+    internal::{
         commit_hash::CommitHash,
         utils::{get_commits_for_branch, get_head_branch_name},
-    }
+    },
 };
 
 pub fn merge(branch_name: &String) -> Result<()> {
