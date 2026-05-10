@@ -33,7 +33,7 @@ fn main() -> Result<()> {
             pretty_print,
             type_of,
             hash,
-        } => match internal::cat_file(&hash, *type_of, *pretty_print) {
+        } => match internal::cat_file(hash, *type_of, *pretty_print) {
             Ok(_) => {}
             Err(e) => writeln!(stderr, "{}", e.to_string().red())?,
         },
